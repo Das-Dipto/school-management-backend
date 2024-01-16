@@ -32,7 +32,8 @@ const Student = mongoose.model('students', studentSchema);
 app.get('/api/getStudentsData', async (req, res) => {
   try {
     const students = await Student.find({});
-    console.log(`GetstudentDataFromDB: ${students}`)
+    // console.log(`GetstudentDataFromDB: ${students}`)
+    console.log(`Getstudent: ${students}`)
     res.json(students);
   } catch (err) {
     console.error(err);
