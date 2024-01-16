@@ -26,6 +26,11 @@ const studentSchema = new mongoose.Schema({
   age: Number,
 });
 
+const studentParentSchema = new mongoose.Schema({
+    parentName: String,
+    phoneNumber: Number,
+  });
+
 const Student = mongoose.model('students', studentSchema);
 
 // Test Route to get all students data from database
