@@ -20,7 +20,7 @@ mongoose.connect(`${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB
 .catch((error)=>console.log(`Apology, Database connection error: ${error}`))
 
 
-// Define the Student model
+// Define the Student Data model
 const studentSchema = new mongoose.Schema({
   name: String,
   age: Number,
@@ -40,6 +40,7 @@ app.get('/api/getStudentsData', async (req, res) => {
   }
 });
 
+// login(post), registation(post) , userData(get)
 
 
 // Example test route
