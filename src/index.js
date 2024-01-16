@@ -1,6 +1,7 @@
 // Import necessary modules
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 // Initialize express app
@@ -11,7 +12,34 @@ app.use(cors());
 
 
 // Port Initialization
-const PORT = process.env.PORT  || 3000;
+const PORT = process.env.SERVER_PORT  || 3000;
+
+//Database initialization
+mongoose.connect(`${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`)
+.then(()=>console.log(`Well Done, DB is successfully connected`))
+.catch((error)=>console.log(`Apology, Database connection error: ${error}`))
+
+
+// Define the Student model
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+});
+
+const Student = mongoose.model('students', studentSchema);
+
+// Test Route to get all students data from database
+app.get('/api/getStudentsData', async (req, res) => {
+  try {
+    const students = await Student.find({});
+    console.log(`GetstudentData: ${students}`)
+    res.json(students);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error retrieving students');
+  }
+});
+
 
 
 // Example test route
