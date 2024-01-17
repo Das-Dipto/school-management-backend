@@ -1,9 +1,10 @@
 {
-  "name": "School-Management-Backend",
+  "name": "school-management-backend",
   "version": "1.0.0",
   "description": "Related to school management backend using Node.js, powered by Express.js",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rakib Hossen, Tanjir Hasan, Baishakhe Pramanik, Sudipto Das, Dipto Das",
