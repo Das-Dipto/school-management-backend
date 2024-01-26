@@ -1,23 +1,90 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const Assignment = mongoose.Schema({
-  title: String,
-  startDate: String,
-  dueDate: String,
-  files: String,
-  instruction: String,
-  points: Number,
-  topic: String,
-  isAccepting: Boolean,
-  edit: {
-    isEdit: Boolean,
-    editTime: String,
+  title: {
+    type: String,
+    required: true,
   },
-  handledIn: [],
-  assigned: [],
+  instruction: {
+    type: String,
+    required: false,
+  },
+  startDate: {
+    type: Date,
+    default: Date.now,
+  },
+  dueDate: {
+    type: Date,
+    default: Date.now.toString(),
+  },
+  files: {
+    type: String,
+    required: false,
+  },
+  points: Schema.Types.Mixed,
+  topics: {
+    type: [String],
+    default: [],
+  },
+  isAccepting: {
+    type: Boolean,
+    default: true,
+  },
+  edit: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+    editTime: {
+      type: String,
+      default: Date.now().toString(),
+    },
+  },
+  handedIn: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        select: ["userName", "email", "photo", "_id"],
+      },
+    ],
+    default: [],
+  },
+  assigned: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        select: ["name", "email", "photo", "_id"],
+      },
+    ],
+    default: [],
+  },
   marked: {
-    mark: Number,
-    _id: String,
+    type: [
+      {
+        students: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+          select: ["name", "email", "photo", "_id"],
+        },
+        mark: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    default: [],
+  },
+  teacher: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    select: ["name", "email", "photo", "_id"],
   },
 });
 
