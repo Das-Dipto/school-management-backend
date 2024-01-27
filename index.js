@@ -7,6 +7,8 @@ const userRoute = require("./src/routes/users.route");
 const newAttendance = require("./src/routes/attendance.route.js");
 const attendanceSchema = require('./src/models/attendance.model.js');
 const { attendance } = require("./src/controllers/attendance.controller.js");
+const assignmentRoutes = require("./src/routes/assignments/assignments.routes");
+
 // Initialize express app
 const app = express();
 
@@ -19,9 +21,7 @@ const PORT = process.env.SERVER_PORT || 3000;
 
 //Database initialization
 mongoose
-  .connect(
-    "mongodb://localhost:27017"
-  ) // process.env.DB_URL
+  .connect(process.env.DB_URL) // process.env.DB_URL
   .then(() => console.log(`Well Done, DB is successfully connected`))
   .catch((error) =>
     console.log(`Apology, Database connection error: ${error}`)
@@ -54,7 +54,7 @@ app.get("/api/schoolData", (req, res) => {
 
 // user route
 app.use("/api/", userRoute);
-app.use("/api/", newAttendance);
+app.use("/api/", assignmentRoutes);
 
 // Start the server
 app.listen(PORT, () => {
