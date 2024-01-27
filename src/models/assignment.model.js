@@ -23,9 +23,9 @@ const Assignment = mongoose.Schema({
     required: false,
   },
   points: Schema.Types.Mixed,
-  topics: {
-    type: [String],
-    default: [],
+  topic: {
+    type: String,
+    required: true,
   },
   isAccepting: {
     type: Boolean,
@@ -85,6 +85,11 @@ const Assignment = mongoose.Schema({
     ref: "User",
     required: true,
     select: ["name", "email", "photo", "_id"],
+  },
+  class: {
+    type: Schema.Types.ObjectId,
+    ref: "Class",
+    required: true,
   },
 });
 
