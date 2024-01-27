@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
-const Attendance = mongoose.Schema({
-  roll: Number,
+const attendanceSchema = mongoose.Schema({
   name: String,
-  isAttend: Boolean,
-  date: new Date(),
+  date: { type: Date, default: Date.now },
   class: String,
+  phone: Number,
+  id: Number,
+  isAttend: Boolean,
 });
 
-module.exports = mongoose.model("Attendance", Attendance);
+module.exports = mongoose.model("Attendance", attendanceSchema);

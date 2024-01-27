@@ -4,7 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const userRoute = require("./src/routes/users.route");
-
+const newAttendance = require("./src/routes/attendance.route.js");
+const attendanceSchema = require('./src/models/attendance.model.js');
+const { attendance } = require("./src/controllers/attendance.controller.js");
 // Initialize express app
 const app = express();
 
@@ -18,7 +20,7 @@ const PORT = process.env.SERVER_PORT || 3000;
 //Database initialization
 mongoose
   .connect(
-    "mongodb+srv://school_management:quQ2SuKJvpuSQNWv@simple-node-app.ybb3hyi.mongodb.net/school_management"
+    "mongodb://localhost:27017"
   ) // process.env.DB_URL
   .then(() => console.log(`Well Done, DB is successfully connected`))
   .catch((error) =>
@@ -52,6 +54,7 @@ app.get("/api/schoolData", (req, res) => {
 
 // user route
 app.use("/api/", userRoute);
+app.use("/api/", newAttendance);
 
 // Start the server
 app.listen(PORT, () => {
