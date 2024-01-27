@@ -55,6 +55,7 @@ app.get("/api/schoolData", (req, res) => {
 // user route
 app.use("/api/", userRoute);
 app.use("/api/", assignmentRoutes);
+app.use("/api/", newAttendance);
 
 // Start the server
 app.listen(PORT, () => {

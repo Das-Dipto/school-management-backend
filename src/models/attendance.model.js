@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
 const Attendance = mongoose.Schema({
   date: {
@@ -11,17 +10,34 @@ const Attendance = mongoose.Schema({
       {
         isAttendance: {
           type: Boolean,
-          require: false,
+          required: false,
         },
         onLeave: {
           type: Boolean,
-          require: true,
+          required: false,
         },
+        // TODO
+        // student: {
+        // type: Schema.Types.ObjectId,
+        // ref: "student",
+        // select: ["name", "email", "class", "roll"],
+        // required: true,
+        // },
         student: {
-          type: Schema.Types.ObjectId,
-          ref: "students",
-          require: true,
-          select: ["name, email, class, roll"],
+          type: {
+            name: {
+              type: String,
+              required: true,
+            },
+            class: {
+              type: String,
+              required: true,
+            },
+            roll: {
+              type: String,
+              required: true,
+            },
+          },
         },
       },
     ],
@@ -29,6 +45,7 @@ const Attendance = mongoose.Schema({
 });
 
 module.exports = mongoose.model("Attendance", Attendance);
+
 
 // const attendances = [
 //   {
