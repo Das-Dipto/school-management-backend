@@ -26,31 +26,6 @@ mongoose
     console.log(`Apology, Database connection error: ${error}`)
   );
 
-// Define the Student model
-const studentSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-});
-
-const Student = mongoose.model("students", studentSchema);
-
-// Test Route to get all students data from database
-app.get("/api/getStudentsData", async (req, res) => {
-  try {
-    const students = await Student.find({});
-    console.log(`GetstudentData: ${students}`);
-    res.json(students);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error retrieving students");
-  }
-});
-
-// Example test route
-app.get("/api/schoolData", (req, res) => {
-  res.json({ message: "Hello from the server!" });
-});
-
 // user route
 app.use("/api/", userRoute);
 app.use("/api/", assignmentRoutes);

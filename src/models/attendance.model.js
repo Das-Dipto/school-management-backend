@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const Attendance = mongoose.Schema({
   date: {
     type: Date,
-    default: Date.now.toString(),
+    default: Date.now().toString(),
   },
   students: {
     type: [

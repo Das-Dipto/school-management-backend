@@ -1,4 +1,4 @@
-const User = require("../models/users.model");
+const { User, Student, Teacher } = require("../models/users.model");
 const jwt = require("jsonwebtoken");
 
 // sigining json web token
@@ -35,48 +35,104 @@ const verifyJsonWebToken = (req, res, next) => {
 const registration = async (req, res, next) => {
   try {
     // Extracting user input from request body
-    const { userName, email, password } = req?.body;
-    // Setting default role for a new user
-    const role = "student";
-    // Creating user object to be sent to the frontend
-    const userData = {
-      userName,
-      password,
+    const { firstName, lastName, email, password, role, dateOfBirth } =
+      req?.body;
+
+    // Collecting user info to the user variable
+    let commonUserInfo = {
+      firstName,
+      lastName,
       email,
+      password,
       role,
+      dateOfBirth,
     };
-    // Checking if the user already exists in the database
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      // Responding with an error if the user already exists
-      return res
-        .status(301)
-        .json({ status: 301, message: "This email already exists" });
-    }
-    // Creating a new User instance for database storage
-    const newUser = new User(userData);
-    // Saving the user information to the database and getting the response
-    const registeredUser = await newUser.save();
-    const user = {
-      userName: registeredUser.userName,
-      email: registeredUser.email,
-      role: registeredUser.role,
-      _id: registeredUser._id,
-    };
-    const token = signJsonWebToken(user, "30d");
-    if (registeredUser?._id) {
-      // Responding with the user information if registration is successful
-      res.status(201).json({
-        token: token,
-        user: user,
-        message: "User created successfully",
+    if (role === "student") {
+      const { presentClass, studentId } = req?.body;
+      const user = {
+        presentClass,
+        studentId,
+        ...commonUserInfo,
+      };
+
+      // Checking if the user already exists in the database
+      const existingUser = await Student.findOne({
+        email,
+        role,
       });
+      if (existingUser) {
+        // Responding with an error if the user already exists
+        return res.status(301).json({
+          status: 301,
+          message: `This ${role} account already exists!`,
+        });
+      }
+      // Creating a new User instance for database storage
+      const newStudent = await new Student(user).save();
+      // Removing the password field from the user object before sending the response
+      const { password: _, __v, __t, ...userInfo } = newStudent._doc;
+      const token = signJsonWebToken(user, "30d");
+      if (newStudent?._id) {
+        // Responding with the user information if registration is successful
+        return res.status(201).json({
+          token: token,
+          user: userInfo,
+          message: `${role} account created successfully!`,
+        });
+      }
+    } else if (role === "teacher") {
+      const { teacherId, gradeLevel, qualifications, yearsOfExperience } =
+        req?.body;
+      const user = {
+        teacherId,
+        gradeLevel,
+        qualifications,
+        yearsOfExperience,
+      };
+
+      // Checking if the user already exists in the database
+      const existingUser = await Teacher.findOne({
+        email,
+        role,
+      });
+      if (existingUser) {
+        // Responding with an error if the user already exists
+        return res.status(301).json({
+          status: 301,
+          message: `This ${role} account already exists!`,
+        });
+      }
+      // Creating a new User instance for database storage
+      const newTeacher = await new Student(user).save();
+      // Removing the password field from the user object before sending the response
+      const { password: _, __v, __t, ...userInfo } = newTeacher._doc;
+      const token = signJsonWebToken(user, "30d");
+      if (newTeacher?._id) {
+        // Responding with the user information if registration is successful
+        return res.status(201).json({
+          token: token,
+          user: userInfo,
+          message: `${role} account created successfully!`,
+        });
+      }
+    } else if (role === "parents") {
+      const { childrens, address } = req?.body;
+      const user = {
+        childrens,
+        address,
+        ...commonUserInfo,
+      };
+    } else if (role === "admin") {
+      const { address } = req?.body;
+      const user = {
+        address,
+        ...commonUserInfo,
+      };
     } else {
       // Responding with an error message if user creation fails
-      res.status(500).json({ message: "Failed to create user" });
+      res.status(500).json({ message: "Failed to create user!" });
     }
   } catch (error) {
-    // Handling any errors that occur during the registration process
     next(error);
   }
 };

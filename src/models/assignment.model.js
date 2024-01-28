@@ -16,7 +16,7 @@ const Assignment = mongoose.Schema({
   },
   dueDate: {
     type: Date,
-    default: Date.now.toString(),
+    default: Date.now().toString(),
   },
   files: {
     type: String,
