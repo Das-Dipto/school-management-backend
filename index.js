@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const userRoute = require("./src/routes/users.route");
+const assignmentRoutes = require("./src/routes/assignments/assignments.routes");
 
 // Initialize express app
 const app = express();
@@ -52,6 +53,7 @@ app.get("/api/schoolData", (req, res) => {
 
 // user route
 app.use("/api/", userRoute);
+app.use("/api/", assignmentRoutes);
 
 // Start the server
 app.listen(PORT, () => {
