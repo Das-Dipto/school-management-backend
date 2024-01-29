@@ -18,9 +18,7 @@ const PORT = process.env.SERVER_PORT || 3000;
 
 //Database initialization
 mongoose
-  .connect(
-    "mongodb+srv://school_management:quQ2SuKJvpuSQNWv@simple-node-app.ybb3hyi.mongodb.net/school_management"
-  ) // process.env.DB_URL
+  .connect(process.env.URI) // process.env.DB_URL
   .then(() => console.log(`Well Done, DB is successfully connected`))
   .catch((error) =>
     console.log(`Apology, Database connection error: ${error}`)
